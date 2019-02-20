@@ -2,6 +2,7 @@ package io.bw.useful.util;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,7 +32,7 @@ public class CompressionUtilTest {
 	private CompressionUtil compressionUtil;
 
 	@Test
-	public void decompress_Success() throws IOException {
+	public void decompress_Success_Path() throws IOException {
 		// Given
 		Resource zipResource = new ClassPathResource("compression/compression-file.zip");
 		Path source = Path.of(zipResource.getFile().getAbsolutePath());
@@ -47,6 +48,21 @@ public class CompressionUtilTest {
 			.filter(path -> !path.equals(compressedDirectory))
 			.collect(Collectors.toList());
 		assertThat(compressedFiles).hasSize(5);
+	}
+
+	@Test
+	public void decompress_Success_File() throws IOException {
+		// Given
+		Resource zipResource = new ClassPathResource("compression/compression-file.zip");
+		File source = zipResource.getFile();
+		File targetDirectory = folder.getRoot();
+
+		// When
+		File compressedDirectory = compressionUtil.decompress(source, targetDirectory);
+
+		// Then
+		assertThat(compressedDirectory).exists();
+		assertThat(compressedDirectory.listFiles()).hasSize(5);
 	}
 
 	@Test(expected = IllegalStateException.class)

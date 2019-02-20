@@ -1,5 +1,6 @@
 package io.bw.useful.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,6 +21,17 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CompressionUtil {
+	/**
+	 * decompress the compressed source file to target directory.
+	 *
+	 * @param source          the compressed source file
+	 * @param targetDirectory the target directory file
+	 * @return target directory file
+	 */
+	public File decompress(final File source, final File targetDirectory) {
+		return decompress(source.toPath(), targetDirectory.toPath()).toFile();
+	}
+
 	/**
 	 * decompress the compressed source file to target directory.
 	 *
